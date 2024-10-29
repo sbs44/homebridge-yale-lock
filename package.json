@@ -1,44 +1,49 @@
 {
-  "name": "homebridge-plugin-name",
-  "displayName": "Plugin Name",
-  "type": "module",
+  "name": "@sbs44/homebridge-yale-lock",
+  "displayName": "Homebridge Yale Lock",
   "version": "1.0.0",
-  "private": true,
-  "description": "A short description about what your plugin does.",
-  "author": "Your Name",
+  "private": false,
+  "description": "Control Yale Smart Locks via Seam API in Homebridge",
+  "author": "Spencer S",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/USERNAME/GITHUB_PROJECT_NAME#readme",
+  "homepage": "https://github.com/sbs44/homebridge-yale-lock#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "https://github.com/sbs44/homebridge-yale-lock.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "https://github.com/sbs44/homebridge-yale-lock/issues"
   },
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "yale-lock",
+    "seam-api",
+    "smart-lock",
+    "yale"
   ],
   "main": "dist/index.js",
   "engines": {
-    "node": "^18.20.4 || ^20.18.0 || ^22.10.0",
+    "node": ">=18.0.0",
     "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint src/**/*.ts --max-warnings=0",
     "prepublishOnly": "npm run lint && npm run build",
     "watch": "npm run build && npm link && nodemon"
   },
+  "dependencies": {
+    "seam": "^1.0.0"
+  },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.7.9",
-    "eslint": "^9.13.0",
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
     "homebridge": "^2.0.0-beta.0",
-    "nodemon": "^3.1.7",
-    "rimraf": "^6.0.1",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.11.0"
+    "typescript": "^5.3.3"
   }
 }

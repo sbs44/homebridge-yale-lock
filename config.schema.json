@@ -1,8 +1,7 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "YaleLock",
   "pluginType": "platform",
   "singular": true,
-  "strictValidation": false,
   "schema": {
     "type": "object",
     "properties": {
@@ -10,7 +9,33 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "Example Dynamic Platform"
+        "default": "Yale Lock"
+      },
+      "seamApiKey": {
+        "title": "Seam API Key",
+        "type": "string",
+        "required": true,
+        "description": "API key from your Seam account"
+      },
+      "seamWorkspaceId": {
+        "title": "Seam Workspace ID",
+        "type": "string",
+        "required": true,
+        "description": "Workspace ID from your Seam account"
+      },
+      "pollInterval": {
+        "title": "Poll Interval",
+        "type": "number",
+        "required": false,
+        "default": 10,
+        "description": "How often to check lock status (in seconds)"
+      },
+      "debug": {
+        "title": "Debug Mode",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Enable detailed debug logging"
       }
     }
   }
