@@ -1,8 +1,7 @@
-// src/platform.ts
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 import { Seam } from 'seam';
 import { YaleLockAccessory } from './platformAccessory';
-import { PLATFORM_NAME, PLUGIN_NAME, SeamLockDevice } from './settings';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 
 export class YaleLockPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;

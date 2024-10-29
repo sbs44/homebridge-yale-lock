@@ -1,11 +1,12 @@
 {
   "name": "@sbs44/homebridge-yale-lock",
   "displayName": "Homebridge Yale Lock",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "private": false,
   "description": "Control Yale Smart Locks via Seam API in Homebridge",
   "author": "Spencer S",
   "license": "Apache-2.0",
+  "type": "commonjs",
   "homepage": "https://github.com/sbs44/homebridge-yale-lock#readme",
   "repository": {
     "type": "git",
@@ -28,7 +29,7 @@
   },
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "lint": "eslint src/**/*.ts --max-warnings=0",
+    "lint": "eslint 'src/**/*.ts' --max-warnings=0",
     "prepublishOnly": "npm run lint && npm run build",
     "watch": "npm run build && npm link && nodemon"
   },
@@ -44,6 +45,9 @@
     "nodemon": "^3.1.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
