@@ -16,33 +16,6 @@
         "type": "string",
         "required": true,
         "description": "API key from your Seam account"
-      },
-      "lockTimeout": {
-        "title": "Lock Operation Timeout",
-        "type": "number",
-        "required": false,
-        "default": 15,
-        "description": "Timeout in seconds for lock operations"
-      },
-      "retryAttempts": {
-        "title": "Retry Attempts",
-        "type": "number",
-        "required": false,
-        "default": 3,
-        "description": "Number of retry attempts for failed operations"
-      },
-      "pollInterval": {
-        "title": "Status Poll Interval",
-        "type": "number",
-        "required": false,
-        "default": 10,
-        "description": "How often to check lock status (in seconds)"
-      },
-      "debug": {
-        "title": "Debug Mode",
-        "type": "boolean",
-        "required": false,
-        "default": false
       }
     }
   }
