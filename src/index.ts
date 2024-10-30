@@ -1,7 +1,7 @@
 import { API } from 'homebridge';
-import { YaleLockPlatform } from './platform';
-import { PLATFORM_NAME } from './settings';
+import { SeamLockPlatform } from './platform.js';
+import { PLATFORM_NAME } from './settings.js';
 
-export = (api: API) => {
-  api.registerPlatform(PLATFORM_NAME, YaleLockPlatform);
+export default (api: API) => {
+  api.registerPlatform(PLATFORM_NAME, SeamLockPlatform);
 };

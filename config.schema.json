@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "YaleLock",
+  "pluginAlias": "SeamLock",
   "pluginType": "platform",
   "singular": true,
   "schema": {
@@ -9,13 +9,19 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "Yale Lock"
+        "default": "Seam Lock"
       },
-      "seamApiKey": {
+      "apiKey": {
         "title": "Seam API Key",
         "type": "string",
         "required": true,
-        "description": "API key from your Seam account"
+        "placeholder": "seam_test_..."
+      },
+      "deviceId": {
+        "title": "Device ID",
+        "type": "string",
+        "required": true,
+        "placeholder": "device_..."
       }
     }
   }

@@ -1,25 +1,22 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
-import { Seam } from 'seam';
-import { UnlockButtonAccessory } from './platformAccessory';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
+import { SeamLockAccessory } from './platformAccessory.js';
 
-export class YaleLockPlatform implements DynamicPlatformPlugin {
-  public readonly Service: typeof Service = this.api.hap.Service;
-  public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
-  public readonly accessories: Map<string, PlatformAccessory> = new Map();
-  private readonly seam: Seam;
+export class SeamLockPlatform implements DynamicPlatformPlugin {
+  public readonly Service: typeof Service;
+  public readonly Characteristic: typeof Characteristic;
+  public readonly accessories: PlatformAccessory[] = [];
 
   constructor(
     public readonly log: Logger,
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
-    this.seam = new Seam({
-      apiKey: config.seamApiKey as string
-    });
+    this.Service = this.api.hap.Service;
+    this.Characteristic = this.api.hap.Characteristic;
 
-    if (!config.seamApiKey) {
-      this.log.error('No Seam API key provided');
+    if (!config.apiKey || !config.deviceId) {
+      this.log.error('Missing required configuration. Please check your config.json');
       return;
     }
 
@@ -29,28 +26,22 @@ export class YaleLockPlatform implements DynamicPlatformPlugin {
   }
 
   configureAccessory(accessory: PlatformAccessory) {
-    this.accessories.set(accessory.UUID, accessory);
+    this.log.info('Loading accessory from cache:', accessory.displayName);
+    this.accessories.push(accessory);
   }
 
-  async discoverDevices() {
-    try {
-      const locks = await this.seam.locks.list();
+  discoverDevices() {
+    const uuid = this.api.hap.uuid.generate(this.config.deviceId);
+    const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
 
-      for (const lock of locks) {
-        const uuid = this.api.hap.uuid.generate(`unlock_${lock.device_id}`);
-        const existingAccessory = this.accessories.get(uuid);
-
-        if (existingAccessory) {
-          new UnlockButtonAccessory(this, existingAccessory, this.seam);
-        } else {
-          const accessory = new this.api.platformAccessory(`${lock.properties.name} Unlock`, uuid);
-          accessory.context.device = lock;
-          new UnlockButtonAccessory(this, accessory, this.seam);
-          this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
-        }
-      }
-    } catch (error) {
-      this.log.error('Error discovering devices:', error);
+    if (existingAccessory) {
+      this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
+      new SeamLockAccessory(this, existingAccessory);
+    } else {
+      this.log.info('Adding new accessory');
+      const accessory = new this.api.platformAccessory('Seam Lock', uuid);
+      new SeamLockAccessory(this, accessory);
+      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
     }
   }
 }

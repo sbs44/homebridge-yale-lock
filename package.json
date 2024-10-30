@@ -1,54 +1,44 @@
 {
-  "name": "@sbs44/homebridge-yale-lock",
-  "displayName": "Homebridge Yale Lock",
-  "version": "1.0.2",
+  "name": "homebridge-seam-lock",
+  "displayName": "Seam Lock",
+  "type": "module",
+  "version": "1.0.0",
   "private": false,
-  "description": "Control Yale Smart Locks via Seam API in Homebridge",
+  "description": "Unlock lock with Seam API.",
   "author": "Spencer S",
   "license": "Apache-2.0",
-  "type": "commonjs",
   "homepage": "https://github.com/sbs44/homebridge-yale-lock#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sbs44/homebridge-yale-lock.git"
+    "url": "https://github.com/sbs44/homebridge-yale-lock.git"
   },
   "bugs": {
     "url": "https://github.com/sbs44/homebridge-yale-lock/issues"
   },
   "keywords": [
-    "homebridge-plugin",
-    "yale-lock",
-    "seam-api",
-    "smart-lock",
-    "yale"
+    "homebridge-plugin"
   ],
   "main": "dist/index.js",
   "engines": {
-    "node": ">=18.0.0",
+    "node": "^18.20.4 || ^20.18.0 || ^22.10.0",
     "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "tsc",
-    "prepublishOnly": "npm run clean && npm run build",
-    "lint": "eslint 'src/**/*.ts' --max-warnings=0",
+    "build": "rimraf ./dist && tsc",
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "npm run lint && npm run build",
     "watch": "npm run build && npm link && nodemon"
   },
-  "dependencies": {
-    "seam": "^1.0.0"
-  },
   "devDependencies": {
-    "@types/node": "^18.16.20",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.56.0",
+    "@eslint/js": "^9.13.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.7.9",
+    "eslint": "^9.13.0",
     "homebridge": "^2.0.0-beta.0",
-    "nodemon": "^3.0.1",
-    "rimraf": "^5.0.0",
-    "typescript": "~5.0.4"
-  },
-  "publishConfig": {
-    "access": "public",
-    "tag": "alpha"
+    "nodemon": "^3.1.7",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0"
   }
 }
