@@ -2,7 +2,7 @@
   "name": "homebridge-seam-lock",
   "displayName": "Seam Lock",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Unlock lock with Seam API.",
   "author": "Spencer S",
