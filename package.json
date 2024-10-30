@@ -10,7 +10,7 @@
   "homepage": "https://github.com/sbs44/homebridge-yale-lock#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sbs44/homebridge-yale-lock.git"
+    "url": "git+https://github.com/sbs44/homebridge-yale-lock.git"
   },
   "bugs": {
     "url": "https://github.com/sbs44/homebridge-yale-lock/issues"
@@ -28,26 +28,27 @@
     "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "clean": "rimraf ./dist",
+    "build": "tsc",
+    "prepublishOnly": "npm run clean && npm run build",
     "lint": "eslint 'src/**/*.ts' --max-warnings=0",
-    "prepublishOnly": "npm run lint && npm run build",
     "watch": "npm run build && npm link && nodemon"
   },
   "dependencies": {
     "seam": "^1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/node": "^18.16.20",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "homebridge": "^2.0.0-beta.0",
-    "nodemon": "^3.1.0",
-    "rimraf": "^5.0.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.0.4"
+    "nodemon": "^3.0.1",
+    "rimraf": "^5.0.0",
+    "typescript": "~5.0.4"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   }
 }

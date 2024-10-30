@@ -1,13 +1,12 @@
 import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
 import { Seam } from 'seam';
-import { YaleLockAccessory } from './platformAccessory';
+import { QuickUnlockAccessory } from './platformAccessory';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 
 export class YaleLockPlatform implements DynamicPlatformPlugin {
   public readonly Service: typeof Service = this.api.hap.Service;
   public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
   public readonly accessories: Map<string, PlatformAccessory> = new Map();
-  public readonly discoveredCacheUUIDs: string[] = [];
   private readonly seam: Seam;
 
   constructor(
@@ -15,7 +14,6 @@ export class YaleLockPlatform implements DynamicPlatformPlugin {
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
-    // Initialize Seam with API key
     this.seam = new Seam({
       apiKey: config.seamApiKey as string
     });
@@ -25,10 +23,7 @@ export class YaleLockPlatform implements DynamicPlatformPlugin {
       return;
     }
 
-    this.log.debug('Finished initializing platform:', config.name);
-
     this.api.on('didFinishLaunching', () => {
-      this.log.debug('Executed didFinishLaunching callback');
       this.discoverDevices();
     });
   }
@@ -43,29 +38,27 @@ export class YaleLockPlatform implements DynamicPlatformPlugin {
       const locks = await this.seam.locks.list();
 
       for (const lock of locks) {
-        const uuid = this.api.hap.uuid.generate(lock.device_id);
+        // Generate unique ID for the quick unlock button
+        const uuid = this.api.hap.uuid.generate(`quickunlock_${lock.device_id}`);
         const existingAccessory = this.accessories.get(uuid);
 
         if (existingAccessory) {
-          this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
+          this.log.info('Restoring existing quick unlock button:', existingAccessory.displayName);
           existingAccessory.context.device = lock;
           this.api.updatePlatformAccessories([existingAccessory]);
-          new YaleLockAccessory(this, existingAccessory, this.seam);
+          new QuickUnlockAccessory(this, existingAccessory, this.seam);
         } else {
-          this.log.info('Adding new accessory:', lock.properties.name);
-          const accessory = new this.api.platformAccessory(lock.properties.name, uuid);
+          this.log.info('Adding new quick unlock button for:', lock.properties.name);
+          const accessory = new this.api.platformAccessory(`${lock.properties.name} Quick Unlock`, uuid);
           accessory.context.device = lock;
-          new YaleLockAccessory(this, accessory, this.seam);
+          new QuickUnlockAccessory(this, accessory, this.seam);
           this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
         }
-
-        this.discoveredCacheUUIDs.push(uuid);
       }
 
-      // Remove stale accessories
+      // Clean up old accessories
       for (const [uuid, accessory] of this.accessories) {
-        if (!this.discoveredCacheUUIDs.includes(uuid)) {
-          this.log.info('Removing existing accessory from cache:', accessory.displayName);
+        if (!locks.find(l => uuid === this.api.hap.uuid.generate(`quickunlock_${l.device_id}`))) {
           this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
         }
       }
